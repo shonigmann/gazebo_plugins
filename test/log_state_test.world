@@ -1,0 +1,134 @@
+<sdf version="1.6">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+        
+    <model name="ball">
+      <pose>0 0 2 0 0 0</pose>
+      <link name="link">
+        <pose>0 0 0 0 0 0</pose>      
+        <inertial>
+          <mass>4188.7902</mass>
+          <inertia>
+            <ixx>1675.51608</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1675.51608</iyy>
+            <iyz>0</iyz>
+            <izz>1675.51608</izz>
+          </inertia>
+        <pose>0 0 0 0 0 0</pose>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <sphere>
+              <radius>1.0</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <min_depth>1e-3</min_depth>
+                <kp>1e6</kp>
+                <kd>1e3</kd>
+                <max_vel>10</max_vel>
+              </ode>
+            </contact>
+            <!--
+            <friction>
+              <mu1>0.5</mu1>
+              <mu2>0.5</mu2>
+            </friction> 
+            -->
+            <bounce>
+              <restitution_coefficient>0.99</restitution_coefficient>
+              <threshold>0.01</threshold>
+            </bounce>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <sphere>
+              <radius>1.0</radius>
+            </sphere>
+          </geometry>
+        </visual>
+      </link>
+	    <plugin name="gazebo_log_state" filename="libgazebo_log_state.so">
+
+		    <!-- File path -->
+		    <file_path>~/gazebo_plugins/data/ball_drop.csv</file_path>
+		    <log_description>testing link state logging</log_description>
+
+		    <!-- Log rate in Hertz; Set <= 0 for as fast as possible -->
+		    <update_rate>0</update_rate>
+
+		    <!-- Optional: Name of links in the model whose states will be logged. -->
+		    <link_name>link</link_name>
+
+		    <!-- Optional: Name of joints in the model whose states will be logged. 
+		    <joint_name>left_wheel</joint_name> 
+		    -->
+
+		    <!-- Toggle which data to log -->
+		    <log_sim_time>1</log_sim_time>
+		    <log_real_time>1</log_real_time>
+
+		    <log_pos>1</log_pos>
+		    <log_vel>1</log_vel>
+		    <log_acc>1</log_acc>
+		    <log_joint_force>1</log_joint_force>
+		    <log_joint_torque>1</log_joint_torque>
+
+	    </plugin>
+    </model>
+
+    <physics type="ode">
+      <ode>
+        <solver>
+          <type>world</type>
+          <iters>100</iters>
+        </solver>
+        <constraints>
+          <cfm>0.2</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>10</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+    <gravity>0.0 0.0 -9.81</gravity>
+    
+    <state world_name='default'>
+      <model name='"ball"'>
+        <pose>0 0 2 0 0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 2 0 0 0</pose>
+          <velocity>1 -1 0 0.2 -0.4 1.0</velocity>
+          <acceleration>0 0 -9.81 0 -0 0</acceleration>
+          <wrench>0 0 0 0 0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    
+  </world>
+</sdf>
